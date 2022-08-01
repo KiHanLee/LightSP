@@ -1,13 +1,50 @@
+<script setup lang="ts">
+import { useIndexStore } from "../../store"
+import { useDarkModeStore } from "../../store/darkMode"
+import sGlobal from './global.vue'
+import sWallpaper from './wallpaper.vue'
+import sClock from './clock.vue'
+import sDarkMode from './darkMode.vue'
+import sWeather from './weather.vue'
+
+/**
+ * Emits
+ */
+const emit = defineEmits(['close'])
+
+/**
+ * Data
+ */
+const store = {
+  global: useIndexStore(),
+  darkMode: useDarkModeStore()
+}
+
+/**
+ * Methods
+ */
+const reset = () => {
+  if (prompt('输入 "confirm" 确认您的操作: ') === 'confirm') {
+    localStorage.removeItem('LightSP')
+    localStorage.removeItem('LightSP-weather')
+    localStorage.removeItem('LightSP-darkMode')
+    localStorage.removeItem('LightSP-wallpaper')
+    localStorage.removeItem('LightSP-global')
+    location.reload()
+  }
+}
+</script>
+
 <template>
   <div
     id="vSettings"
     class="p-tb-sm p-lr-ex transition"
     :class="{
-      'blur': store.state.gl.blur
+      'blur': store.global.blur
     }"
     :style="`
-      color: ${store.state.darkMode.enabled ? store.state.darkMode.color : store.state.gl.color};
-      background-color: ${store.state.darkMode.enabled ? store.state.darkMode.bgColor : store.state.gl.bgColor}
+      color: ${store.darkMode.enabled ? store.darkMode.color : store.global.color};
+      background-color: ${store.darkMode.enabled ? store.darkMode.bgColor : store.global.bgColor}
     `"
   >
     <!-- 全局设置 -->
@@ -26,38 +63,10 @@
     <sWeather />
     <hr>
     <button id="reset" class="m-b w-100 border-none border-radius transition pointer" type="button" @click="reset()">恢复默认设置</button>
-    <button id="close" class="w-100 border-none border-radius transition pointer" type="button" @click="store.commit('settingVisible')">关闭</button>
+    <button id="close" class="w-100 border-none border-radius transition pointer" type="button" @click="emit('close')">关闭</button>
+    <hr>
   </div>
 </template>
-
-<script>
-import { useStore } from 'vuex'
-import sGlobal from '@/components/settings/global.vue'
-import sWallpaper from '@/components/settings/wallpaper.vue'
-import sClock from '@/components/settings/clock.vue'
-import sDarkMode from '@/components/settings/darkMode.vue'
-import sWeather from '@/components/settings/weather.vue'
-export default {
-  components: {
-    sGlobal,
-    sWallpaper,
-    sClock,
-    sDarkMode,
-    sWeather
-  },
-  setup () {
-    const store = useStore()
-    const reset = () => {
-      if (prompt('输入 "confirm" 确认您的操作.') === 'confirm') {
-        localStorage.removeItem('LightSP')
-        location.reload()
-      }
-    }
-
-    return { store, reset }
-  }
-}
-</script>
 
 <style lang="stylus" scoped>
 ::selection

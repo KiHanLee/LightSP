@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "__MSG_extName__",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "browser_action": {
     "default_title": "__MSG_extDefaultTitle__",
     "default_icon": {
@@ -28,6 +28,7 @@
   "default_locale": "zh_CN",
   "permissions": [
     "https://www.baidu.com/sugrec",
+    "https://www.kihanlee.site/api/wallpaper",
     "https://cn.bing.com/HPImageArchive.aspx"
   ],
   "chrome_url_overrides": {
