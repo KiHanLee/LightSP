@@ -37,12 +37,13 @@ if (store.wallpaper.bing) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: 'ts=' + Date.now()
+    body: `ts=${Date.now()}`
   })
     .then((ori) => ori.json())
     .then((res) => {
       if (res?.url) currentBackground.value = res.url
     })
+    .catch((err) => console.log(err))
 }
 // Use customize wallpaper
 if (store.wallpaper.customize) {
@@ -87,12 +88,9 @@ onMounted(() => {
     ref="backgroundEl"
     id="vBackground"
     class="object-fit-cover"
-    :style="`
-      filter: ${
-        store.wallpaper.focusBlur && props.Blur ? 'blur(4px)' : ''} ${
-        store.darkMode.darkWallpaper ? 'brightness(.8)' : ''
-      }
-    `"
+    :style="{
+      'filter': `${store.wallpaper.focusBlur && props.Blur ? 'blur(4px)' : ''} ${store.darkMode.darkWallpaper ? 'brightness(.8)' : ''}`
+    }"
     :src="currentBackground"
     alt="bg"
   />
